@@ -94,6 +94,7 @@ if ( HAVE_PYTHON )
     add_test( NAME PyNEST
         COMMAND ${NOSETESTS} -v --with-xunit
         --xunit-file=${PROJECT_BINARY_DIR}/reports/pynest_tests.xml
+        --with-coverage
         ${CMAKE_INSTALL_PREFIX}/${PYEXECDIR}/nest/tests
         )
   endif ()

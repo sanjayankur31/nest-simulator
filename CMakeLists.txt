@@ -222,7 +222,8 @@ set( ALL_LIBS
   "${GSL_LIBRARIES}"
   "${LIBNEUROSIM_LIBRARIES}"
   "${MUSIC_LIBRARIES}"
-  "${MPI_CXX_LIBRARIES}" )
+  "${MPI_CXX_LIBRARIES}" 
+  "-coverage" )
 if ( with-libraries )
   set( ALL_LIBS "${ALL_LIBS};${with-libraries}" )
 endif ()
