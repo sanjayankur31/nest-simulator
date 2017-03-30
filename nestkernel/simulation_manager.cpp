@@ -672,7 +672,8 @@ nest::SimulationManager::update_()
 #pragma omp barrier
 #pragma omp single
         {
-          kernel().sp_manager.update_structural_plasticity();
+          // Do nothing - handle this manually using the PyNEST interface
+          // kernel().sp_manager.update_structural_plasticity();
         }
         // Remove 10% of the vacant elements
         for ( std::vector< Node* >::const_iterator i =
