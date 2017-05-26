@@ -520,6 +520,11 @@ EventDeliveryManager::deliver_events( thread t )
   }
   SpikeEvent se;
 
+  std::cout << "size of displacements_ is: " << displacements_.size() << ": ";
+  for (std::vector<int>::const_iterator i = displacements_.begin(); i != displacements_.end(); ++i)
+      std::cout << *i << "\t";
+  std::cout << std::endl;
+
   std::vector< int > pos( displacements_ );
 
   if ( not off_grid_spiking_ ) // on_grid_spiking
