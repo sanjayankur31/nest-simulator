@@ -37,6 +37,10 @@
 // Includes from sli:
 #include "dictutils.h"
 
+#include <cstdlib>
+#include <stdexcept>
+#include <iostream>
+
 namespace nest
 {
 EventDeliveryManager::EventDeliveryManager()
@@ -510,6 +514,8 @@ EventDeliveryManager::collocate_buffers_( bool done )
 bool
 EventDeliveryManager::deliver_events( thread t )
 {
+  try
+  {
   // are we done?
   bool done = true;
 
@@ -521,9 +527,17 @@ EventDeliveryManager::deliver_events( thread t )
   SpikeEvent se;
 
   std::vector< int > pos( displacements_ );
+  }
+  catch (const std::out_of_range& oor)
+  {
+      std::cerr << "Location 1" << oor.what() << "\n";
+      std::exit(-1);
+  }
 
   if ( not off_grid_spiking_ ) // on_grid_spiking
   {
+    try
+    {
     // prepare Time objects for every possible time stamp within min_delay_
     std::vector< Time > prepared_timestamps(
       kernel().connection_manager.get_min_delay() );
@@ -534,7 +548,15 @@ EventDeliveryManager::deliver_events( thread t )
       prepared_timestamps[ lag ] =
         kernel().simulation_manager.get_clock() - Time::step( lag );
     }
+    }
+    catch (const std::out_of_range& oor)
+    {
+        std::cerr << "Location 2" << oor.what() << "\n";
+        std::exit(-1);
+    }
 
+    try
+    {
     for ( size_t vp = 0;
           vp < ( size_t ) kernel().vp_manager.get_num_virtual_processes();
           ++vp )
@@ -560,11 +582,19 @@ EventDeliveryManager::deliver_events( thread t )
       }
       pos[ pid ] = pos_pid;
     }
+    }
+    catch (const std::out_of_range& oor)
+    {
+        std::cerr << "Location 3" << oor.what() << "\n";
+        std::exit(-1);
+    }
 
     // here we are done with the spiking events
     // pos[pid] for each pid now points to the first entry of
     // the secondary events
 
+    try
+    {
     for ( size_t pid = 0;
           pid < ( size_t ) kernel().mpi_manager.get_num_processes();
           ++pid )
@@ -598,6 +628,13 @@ EventDeliveryManager::deliver_events( thread t )
         kernel().connection_manager.send_secondary(
           t, kernel().model_manager.get_secondary_event_prototype( synid, t ) );
       } // of while (true)
+    }
+    }
+    catch (const std::out_of_range& oor)
+    {
+        std::cerr << "Location 4" << oor.what() << "\n";
+        std::exit(-1);
+    }
 
       // read the done value of the p-th num_process
 
@@ -610,6 +647,8 @@ EventDeliveryManager::deliver_events( thread t )
   }
   else // off grid spiking
   {
+    try
+    {
     // prepare Time objects for every possible time stamp within min_delay_
     std::vector< Time > prepared_timestamps(
       kernel().connection_manager.get_min_delay() );
@@ -646,6 +685,12 @@ EventDeliveryManager::deliver_events( thread t )
         ++pos_pid;
       }
       pos[ pid ] = pos_pid;
+    }
+    }
+    catch (const std::out_of_range& oor)
+    {
+        std::cerr << "Location 5" << oor.what() << "\n";
+        std::exit(-1);
     }
   }
 
