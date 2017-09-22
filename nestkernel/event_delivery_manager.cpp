@@ -584,8 +584,6 @@ EventDeliveryManager::deliver_events( thread t )
     // pos[pid] for each pid now points to the first entry of
     // the secondary events
 
-    try
-    {
     for ( size_t pid = 0;
           pid < ( size_t ) kernel().mpi_manager.get_num_processes();
           ++pid )
@@ -593,6 +591,8 @@ EventDeliveryManager::deliver_events( thread t )
       std::vector< unsigned int >::iterator readpos =
         global_grid_spikes_.begin() + pos[ pid ];
 
+    try
+    {
       while ( true )
       {
         // we must not use unsigned int for the type, otherwise
@@ -619,7 +619,6 @@ EventDeliveryManager::deliver_events( thread t )
         kernel().connection_manager.send_secondary(
           t, kernel().model_manager.get_secondary_event_prototype( synid, t ) );
       } // of while (true)
-    }
     }
     catch (const std::out_of_range& oor)
     {
