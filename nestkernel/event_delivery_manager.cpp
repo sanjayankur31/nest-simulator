@@ -514,8 +514,6 @@ EventDeliveryManager::collocate_buffers_( bool done )
 bool
 EventDeliveryManager::deliver_events( thread t )
 {
-  try
-  {
   // are we done?
   bool done = true;
 
@@ -525,22 +523,15 @@ EventDeliveryManager::deliver_events( thread t )
     return done;
   }
   SpikeEvent se;
-
   std::vector< int > pos( displacements_ );
-  }
-  catch (const std::out_of_range& oor)
-  {
-      std::cerr << "Location 1" << oor.what() << "\n";
-      std::exit(-1);
-  }
 
   if ( not off_grid_spiking_ ) // on_grid_spiking
   {
-    try
-    {
     // prepare Time objects for every possible time stamp within min_delay_
     std::vector< Time > prepared_timestamps(
       kernel().connection_manager.get_min_delay() );
+    try
+    {
     for ( size_t lag = 0;
           lag < ( size_t ) kernel().connection_manager.get_min_delay();
           lag++ )
