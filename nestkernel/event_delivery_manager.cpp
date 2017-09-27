@@ -530,8 +530,6 @@ EventDeliveryManager::deliver_events( thread t )
     // prepare Time objects for every possible time stamp within min_delay_
     std::vector< Time > prepared_timestamps(
       kernel().connection_manager.get_min_delay() );
-    try
-    {
     for ( size_t lag = 0;
           lag < ( size_t ) kernel().connection_manager.get_min_delay();
           lag++ )
@@ -539,15 +537,7 @@ EventDeliveryManager::deliver_events( thread t )
       prepared_timestamps[ lag ] =
         kernel().simulation_manager.get_clock() - Time::step( lag );
     }
-    }
-    catch (const std::out_of_range& oor)
-    {
-        std::cerr << "Location 2" << oor.what() << "\n";
-        std::exit(-1);
-    }
 
-    try
-    {
     for ( size_t vp = 0;
           vp < ( size_t ) kernel().vp_manager.get_num_virtual_processes();
           ++vp )
@@ -563,7 +553,16 @@ EventDeliveryManager::deliver_events( thread t )
           // tell all local nodes about spikes on remote machines.
           se.set_stamp( prepared_timestamps[ lag ] );
           se.set_sender_gid( nid );
-          kernel().connection_manager.send( t, nid, se );
+          try {
+            kernel().connection_manager.send( t, nid, se );
+          }
+          catch (const std::out_of_range& oor)
+          {
+            std::cerr << "Location 29: " << oor.what() << "\n";
+            std::cerr << "thread (t) is: " << t << std::endl;
+            std::cerr << "sender gid (nid) is:" << nid << std::endl;
+            std::exit(-1);
+          }
         }
         else
         {
@@ -572,12 +571,6 @@ EventDeliveryManager::deliver_events( thread t )
         ++pos_pid;
       }
       pos[ pid ] = pos_pid;
-    }
-    }
-    catch (const std::out_of_range& oor)
-    {
-        std::cerr << "Location 3" << oor.what() << "\n";
-        std::exit(-1);
     }
 
     // here we are done with the spiking events
@@ -591,8 +584,6 @@ EventDeliveryManager::deliver_events( thread t )
       std::vector< unsigned int >::iterator readpos =
         global_grid_spikes_.begin() + pos[ pid ];
 
-    try
-    {
       while ( true )
       {
         // we must not use unsigned int for the type, otherwise
@@ -617,14 +608,8 @@ EventDeliveryManager::deliver_events( thread t )
           .set_stamp( kernel().simulation_manager.get_clock() );
 
         kernel().connection_manager.send_secondary(
-          t, kernel().model_manager.get_secondary_event_prototype( synid, t ) );
+            t, kernel().model_manager.get_secondary_event_prototype( synid, t ) );
       } // of while (true)
-    }
-    catch (const std::out_of_range& oor)
-    {
-        std::cerr << "Location 4" << oor.what() << "\n";
-        std::exit(-1);
-    }
 
       // read the done value of the p-th num_process
 
@@ -637,8 +622,6 @@ EventDeliveryManager::deliver_events( thread t )
   }
   else // off grid spiking
   {
-    try
-    {
     // prepare Time objects for every possible time stamp within min_delay_
     std::vector< Time > prepared_timestamps(
       kernel().connection_manager.get_min_delay() );
@@ -675,12 +658,6 @@ EventDeliveryManager::deliver_events( thread t )
         ++pos_pid;
       }
       pos[ pid ] = pos_pid;
-    }
-    }
-    catch (const std::out_of_range& oor)
-    {
-        std::cerr << "Location 5" << oor.what() << "\n";
-        std::exit(-1);
     }
   }
 
