@@ -190,6 +190,12 @@ private:
                           and beta_Ca = 0.001 for a synaptic element means a
                           desired firing rate of 5Hz.
 
+   omega          double -  Parameter that permits moving of the Gaussian
+                            growth curve on the Y axis to enable asymmetric
+                            gain and loss of synaptic elements. 0 < omega <= 2.
+                            When omega = 1, the Growth curve is equivalent to
+                            that used by Butz and van Ooyen.
+
    nu           double -  Growth rate in elements/ms. The growth rate nu is
                           defined in the SynapticElement class. Can be negative.
 
@@ -234,6 +240,7 @@ public:
 private:
   double eta_;
   double eps_;
+  double omega_;
 };
 
 /* BeginDocumentation
@@ -246,7 +253,7 @@ private:
    network during the simulation.
    This type of growth curve  uses a forward Euler integration method to update
    the number of synaptic elements:
-   dz/dt = nu ((2 / (1 + e^((Ca(t) - eps)/psi))) - 1)
+   dz/dt = nu ((2 / (1 + e^((Ca(t) - eps)/psi))) - omega)
    eps is the target mean calcium concentration in the
    neuron, psi controls the width of the sigmoid and nu is the growth rate in
    elements/ms. The growth rate nu is defined in the SynapticElement class.

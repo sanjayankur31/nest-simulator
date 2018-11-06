@@ -85,6 +85,7 @@ nest::GrowthCurveGaussian::GrowthCurveGaussian()
   : GrowthCurve( names::gaussian )
   , eta_( 0.1 )
   , eps_( 0.7 )
+  , omega_( 1.0 )
 {
 }
 
@@ -94,6 +95,7 @@ nest::GrowthCurveGaussian::get( DictionaryDatum& d ) const
   def< std::string >( d, names::growth_curve, name_.toString() );
   def< double >( d, names::eps, eps_ );
   def< double >( d, names::eta, eta_ );
+  def< double >( d, names::omega, omega_ );
 }
 
 void
@@ -101,6 +103,7 @@ nest::GrowthCurveGaussian::set( const DictionaryDatum& d )
 {
   updateValue< double >( d, names::eps, eps_ );
   updateValue< double >( d, names::eta, eta_ );
+  updateValue< double >( d, names::omega, omega_ );
 }
 
 double
@@ -124,7 +127,7 @@ nest::GrowthCurveGaussian::update( double t,
   {
     Ca = Ca - ( ( Ca / tau_Ca ) * h );
     const double dz =
-      h * growth_rate * ( 2.0 * exp( -pow( ( Ca - xi ) / zeta, 2 ) ) - 1.0 );
+      h * growth_rate * ( 2.0 * exp( -pow( ( Ca - xi ) / zeta, 2 ) ) - omega_ );
     z_value = z_value + dz;
   }
 
