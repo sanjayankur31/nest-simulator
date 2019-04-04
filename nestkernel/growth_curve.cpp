@@ -117,7 +117,7 @@ nest::GrowthCurveGaussian::update( double t,
   // Numerical integration from t_minus to t
   // use standard forward Euler numerics
   const double h = Time::get_resolution().get_ms();
-  const double zeta = ( eta_ - eps_ ) / ( 2.0 * sqrt( log( 2.0 ) ) );
+  const double zeta = ( eta_ - eps_ ) / ( 2.0 * sqrt( log( 2.0 / omega_ ) ) );
   const double xi = ( eta_ + eps_ ) / 2.0;
 
   double z_value = z_minus;
