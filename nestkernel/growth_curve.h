@@ -53,12 +53,8 @@ public:
   }
   virtual void get( DictionaryDatum& d ) const = 0;
   virtual void set( const DictionaryDatum& d ) = 0;
-  virtual double update( double t,
-    double t_minus,
-    double Ca_minus,
-    double z,
-    double tau_Ca,
-    double growth_rate ) const = 0;
+  virtual double
+  update( double t, double t_minus, double Ca_minus, double z, double tau_Ca, double growth_rate ) const = 0;
   virtual bool
   is( Name n )
   {
@@ -78,7 +74,8 @@ protected:
   const Name name_;
 };
 
-/* BeginDocumentation
+/** @BeginDocumentation
+
   Name: growth_curve_linear - Linear version of a growth curve
 
   Description:
@@ -118,7 +115,9 @@ protected:
    focal retinal lesions." PLoS Comput Biol 9.10 (2013): e1003259.
 
   FirstVersion: July 2013
+
   Author: Mikael Naveau
+
   SeeAlso: SynapticElement, SPManager, SPBuilder, GrowthCurveLinear,
            GrowthCurveGaussian
 */
@@ -134,18 +133,13 @@ public:
   GrowthCurveLinear();
   void get( DictionaryDatum& d ) const;
   void set( const DictionaryDatum& d );
-  double update( double t,
-    double t_minus,
-    double Ca_minus,
-    double z,
-    double tau_Ca,
-    double growth_rate ) const;
+  double update( double t, double t_minus, double Ca_minus, double z, double tau_Ca, double growth_rate ) const;
 
 private:
   double eps_;
 };
 
-/* BeginDocumentation
+/** @BeginDocumentation
   Name: growth_curve_gaussian - Gaussian version of a growth curve
 
   Description:
@@ -209,7 +203,9 @@ private:
    focal retinal lesions." PLoS Comput Biol 9.10 (2013): e1003259.
 
   FirstVersion: July 2013
+
   Author: Mikael Naveau
+
   SeeAlso: SynapticElement, SPManager, SPBuilder, GrowthCurveLinear,
            GrowthCurveGaussian
 */
@@ -230,12 +226,7 @@ public:
   GrowthCurveGaussian();
   void get( DictionaryDatum& d ) const;
   void set( const DictionaryDatum& d );
-  double update( double t,
-    double t_minus,
-    double Ca_minus,
-    double z,
-    double tau_Ca,
-    double growth_rate ) const;
+  double update( double t, double t_minus, double Ca_minus, double z, double tau_Ca, double growth_rate ) const;
 
 private:
   double eta_;
@@ -243,7 +234,7 @@ private:
   double omega_;
 };
 
-/* BeginDocumentation
+/** @BeginDocumentation
   Name: growth_curve_sigmoid - Sigmoid version of a growth curve
 
   Description:
@@ -287,7 +278,9 @@ private:
    networks." Frontiers in Synaptic Neuroscience 6 (2014): 7.
 
   FirstVersion: September 2016
+
   Author: Ankur Sinha
+
   SeeAlso: SynapticElement, SPManager, SPBuilder, GrowthCurveLinear,
            GrowthCurveSigmoid
 */
@@ -306,12 +299,7 @@ public:
   GrowthCurveSigmoid();
   void get( DictionaryDatum& d ) const;
   void set( const DictionaryDatum& d );
-  double update( double t,
-    double t_minus,
-    double Ca_minus,
-    double z,
-    double tau_Ca,
-    double growth_rate ) const;
+  double update( double t, double t_minus, double Ca_minus, double z, double tau_Ca, double growth_rate ) const;
 
 private:
   double eps_;
