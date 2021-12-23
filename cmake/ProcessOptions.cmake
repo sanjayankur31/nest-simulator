@@ -184,8 +184,6 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
     endif ()
 
     set( BUILD_SHARED_LIBS OFF PARENT_SCOPE )
-    # set RPATH stuff
-    set( CMAKE_SKIP_RPATH TRUE PARENT_SCOPE )
 
     if ( UNIX OR APPLE )
       # On Linux .a is the static library suffix, on Mac OS X .lib can also
@@ -201,54 +199,6 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
 
   else ()
     set( BUILD_SHARED_LIBS ON PARENT_SCOPE )
-
-    # set RPATH stuff
-    set( CMAKE_SKIP_RPATH FALSE PARENT_SCOPE )
-    # use, i.e. don't skip the full RPATH for the build tree
-    set( CMAKE_SKIP_BUILD_RPATH FALSE PARENT_SCOPE )
-    # on OS X
-    set( CMAKE_MACOSX_RPATH ON PARENT_SCOPE )
-
-    # when building, don't use the install RPATH already
-    # (but later on when installing)
-    set( CMAKE_BUILD_WITH_INSTALL_RPATH FALSE PARENT_SCOPE )
-
-    # set run-time search path (RPATH) so that dynamic libraries in ``lib/nest`` can be located
-
-    # Note: "$ORIGIN" (on Linux) and "@loader_path" (on MacOS) are not CMake variables, but special keywords for the
-    # Linux resp. the macOS dynamic loader. They refer to the path in which the object is located, e.g.
-    # ``${CMAKE_INSTALL_PREFIX}/bin`` for the nest and sli executables, ``${CMAKE_INSTALL_PREFIX}/lib/nest`` for all
-    # dynamic libraries except PyNEST (libnestkernel.so, etc.), and  something like
-    # ``${CMAKE_INSTALL_PREFIX}/lib/python3.x/site-packages/nest`` for ``pynestkernel.so``. The RPATH is relative to
-    # this origin, so the binary ``bin/nest`` can find the files in the relative location ``../lib/nest``, and
-    # similarly for PyNEST and the other libraries. For simplicity, we set all the possibilities on all generated
-    # objects.
-
-    # PyNEST can only act as an entry point; it does not need to be included in the other objects' RPATH itself.
-
-    if ( APPLE )
-      set( CMAKE_INSTALL_RPATH
-          # for binaries
-          "@loader_path/../${CMAKE_INSTALL_LIBDIR}/nest"
-          # for libraries (except pynestkernel)
-          "@loader_path/../../${CMAKE_INSTALL_LIBDIR}/nest"
-          # for pynestkernel: origin at <prefix>/lib/python3.x/site-packages/nest
-          "@loader_path/../../../nest"
-          PARENT_SCOPE )
-    else ()
-      set( CMAKE_INSTALL_RPATH
-          # for binaries
-          "\$ORIGIN/../${CMAKE_INSTALL_LIBDIR}/nest"
-          # for libraries (except pynestkernel)
-          "\$ORIGIN/../../${CMAKE_INSTALL_LIBDIR}/nest"
-          # for pynestkernel: origin at <prefix>/lib/python3.x/site-packages/nest
-          "\$ORIGIN/../../../nest"
-          PARENT_SCOPE )
-    endif ()
-
-    # add the automatically determined parts of the RPATH
-    # which point to directories outside the build tree to the install RPATH
-    set( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE PARENT_SCOPE )
 
     if ( UNIX OR APPLE )
       # reverse the search order for lib extensions
