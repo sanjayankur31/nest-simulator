@@ -18,14 +18,14 @@
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
 if ( HAVE_PYTHON )
-  install( CODE "execute_process(
-  COMMAND ${PYTHON} setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}/build
-                             install --prefix=${CMAKE_INSTALL_PREFIX}
-                                     --install-lib=${CMAKE_INSTALL_PREFIX}/${PYEXECDIR}
-                                     --install-scripts=${CMAKE_INSTALL_FULL_BINDIR}
-                                     --install-data=${CMAKE_INSTALL_FULL_DATADIR}
-    WORKING_DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}\")"
-      )
+  #install( CODE "execute_process(
+  #COMMAND ${PYTHON} setup.py build --build-base=${CMAKE_CURRENT_BINARY_DIR}/build
+  #                           install --prefix=${CMAKE_INSTALL_PREFIX}
+  #                                   --install-lib=${CMAKE_INSTALL_PREFIX}/${PYEXECDIR}
+  #                                   --install-scripts=${CMAKE_INSTALL_FULL_BINDIR}
+  #                                   --install-data=${CMAKE_INSTALL_FULL_DATADIR}
+  #  WORKING_DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}\")"
+  #    )
 
   install( FILES examples/connplotter_tutorial.py
       DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/ConnPlotter
