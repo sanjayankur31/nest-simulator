@@ -81,12 +81,10 @@ def helpdesk():
     docdir = sli_func("statusdict/prgdocdir ::")
     help_fname = os.path.join(docdir, 'html', 'index.html')
 
-    if not os.path.isfile(help_fname):
-        msg = "Sorry, the help index cannot be opened. "
-        msg += "Did you run 'make html' before running 'make install'?"
-        raise FileNotFoundError(msg)
-
-    webbrowser.open_new(f"file://{help_fname}")
+    if os.path.isfile(help_fname):
+        webbrowser.open_new(f"file://{help_fname}")
+    else:
+        webbrowser.open_new("https://nest-simulator.readthedocs.io/")
 
 
 @check_stack
