@@ -136,10 +136,6 @@ if ( HAVE_MPI )
 endif ()
 
 
-# Prevent problems with Conda path substitution (see #2348)
-set_source_files_properties( dynamicloader.cpp PROPERTIES COMPILE_OPTIONS "-O0" )
-
-
 add_library( nestkernel STATIC ${nestkernel_sources} )
 set_target_properties( nestkernel
     PROPERTIES

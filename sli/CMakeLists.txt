@@ -83,9 +83,6 @@ set( sli_sources
     )
 
 
-# Prevent problems with Conda path substitution (see #2348) 
-set_source_files_properties( slistartup.cc PROPERTIES COMPILE_OPTIONS "-O0" )
-
 add_library( sli_lib ${sli_sources} )
 
 set_target_properties( sli_lib
